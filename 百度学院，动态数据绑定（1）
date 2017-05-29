@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>百度学院，动态数据绑定</title>
+    <script>
+    //动态绑定（一）
+function Observer(data){
+	this.data=data;
+    this.conver(data);//调用下面的conver函数
+}
+var pro=Observer.prototype; //prototype使有能力向对象添加属性和方法
+
+pro.conver=function (obj){//匿名函数表达式
+	var val;
+   for(var  key in obj){
+	   	if(obj.hasOwnProperty(key)){
+		   val=obj[key];
+		   if(typeof val === "object"){
+		   	 new Observer(val);//
+		   }
+		   this.setVaule(key,val);//调用setValue函数
+		}
+	}
+};
+
+pro.setVaule=function (key, val) {
+    Object.defineProperty(this.data, key, { 
+    //this.data为待修改的对象，不懂为什么是这样的
+        enumerable: true,
+        configurable: true,
+        get: function () {
+            console.log('你访问了' + key);
+            return val;
+        },
+        set: function (newVal) {
+            console.log('你设置了' + key+',新的' + key + ' = ' + newVal);
+            
+            val = newVal;
+        }
+    })
+}
+var app1 = new Observer({
+  name: 'youngwind',
+  age: 25
+});
+var app2=new Observer({
+  university: 'bupt',
+  major: 'computer'
+});
+app1.data.name;// 你访问了 name
+app1.data.age = 100;  // 你设置了 age，新的值为100
+app2.data.university; // 你访问了 university
+app2.data.major = 'science';
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
