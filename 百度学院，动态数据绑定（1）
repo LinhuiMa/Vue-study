@@ -25,8 +25,9 @@ pro.conver=function (obj){//匿名函数表达式
 };
 
 pro.setVaule=function (key, val) {
+    //实现双向绑定
     Object.defineProperty(this.data, key, { 
-    //this.data为待修改的对象，不懂为什么是这样的
+     
         enumerable: true,
         configurable: true,
         get: function () {
